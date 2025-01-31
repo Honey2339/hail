@@ -3,14 +3,17 @@ package smtp
 import (
 	"bufio"
 	"fmt"
-	"hail/session"
+	"hail/SMTPsession"
+	. "hail/lib"
 	"log"
 	"net"
 	"strings"
 )
 
 func Process_my_smtp(conn net.Conn) {
-	session := &session.SMTPSession{}
+	session := &SMTPsession.SMTPSession{}
+	state := &SMTPsession.SMTPStore{}
+	
 	defer conn.Close()
 
 	
@@ -32,23 +35,54 @@ func Process_my_smtp(conn net.Conn) {
 		
 		input = strings.TrimSpace(input)
 		fmt.Println("Client : ", input)
-
-		if input == "HELO" || input == "ELHO" {
+		if session.DataStored && !session.DataClose{
+			if input != "." {
+				state.Data += input
+			} else {
+				session.DataClose = true
+			}
+		} else if input == "HELO" || input == "EHLO" {
 			session.Helo = true
-			_, err = conn.Write([]byte("250 Hello, please to meet you\r\n"))
+			_, err = conn.Write(INIT)
 			if err != nil {
 				log.Fatalln("error writing response :", err)
 				return
 			}
-		} else if input == "MAIL FROM" || session.Helo {
-			session.MailFrom = input[10:]
+		} else if strings.HasPrefix(input, "MAIL FROM:") && session.Helo {
+			state.MailFrom = input[10:]
+			session.MailFromBool = true
 			println(input[10:])
-			_, err = conn.Write([]byte("250 Ok\r\n"))
+			_, err = conn.Write(SCCUESS)
 			if err != nil {
 				log.Fatalln("error writing response", err)
 				return
 			}
+		} else if strings.HasPrefix(input, "RCPT TO:") && session.MailFromBool {
+			state.RcptTo = input[8:]
+			session.RcptToBool = true
+			println(state.RcptTo)
+			_, err = conn.Write(SCCUESS)
+			if err != nil {
+				log.Fatalln("error writing response", err)
+				return
+			}
+		} else if input == "DATA:" && session.RcptToBool {
+			conn.Write(DATA_READY)
+			state.Data = input
+			session.DataStored = true
+			_, err = conn.Write(SCCUESS)
+			if err != nil {
+				log.Fatalln("error writing response", err)
+				return
+			}
+		} else if input == "QUIT" && session.DataClose {
+			session.Quit = true
+			println(CLOSE)
+			conn.Write(CLOSE)
+			conn.Close()
+			break
 		} else {
+			println(input)
 			log.Fatalln("Please try again")
 		}
 	}
