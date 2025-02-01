@@ -2,7 +2,6 @@ package smtp
 
 import (
 	"bufio"
-	"fmt"
 	"hail/SMTPsession"
 	. "hail/lib"
 	"log"
@@ -17,9 +16,9 @@ func Process_my_smtp(conn net.Conn) {
 	defer conn.Close()
 
 	
-	_, err := conn.Write([]byte("220 Welcome to the Go SMTP server"))
+	_, err := conn.Write(CONNECTION_START)
 	if err != nil {
-		log.Fatal("Error writing to client : ", err)
+		log.Printf("ERROR: Writing to client failed: %v\n", err)
 		return
 	}
 	
@@ -29,61 +28,87 @@ func Process_my_smtp(conn net.Conn) {
 		input, err := reader.ReadString('\n')
 		
 		if err != nil {
-			log.Println("Error reading data: ", err)
+			log.Printf("ERROR: Reading data failed: %v\n", err)
 			return
 		}
 		
 		input = strings.TrimSpace(input)
-		fmt.Println("Client : ", input)
+	
 		if session.DataStored && !session.DataClose{
+
 			if input != "." {
 				state.Data += input
 			} else {
 				session.DataClose = true
 			}
+
 		} else if input == "HELO" || input == "EHLO" {
+
 			session.Helo = true
 			_, err = conn.Write(INIT)
+			log.Printf("STATE: HELO received, session initialized\n")
 			if err != nil {
-				log.Fatalln("error writing response :", err)
+				log.Println("", err)
+				conn.Close()
 				return
 			}
+
 		} else if strings.HasPrefix(input, "MAIL FROM:") && session.Helo {
+
+			if(!strings.Contains(input[10:], "@")){
+				log.Println(INVALID_MAIL)
+				conn.Close()
+				return
+			}
 			state.MailFrom = input[10:]
 			session.MailFromBool = true
-			println(input[10:])
+			log.Printf("STATE: MAIL FROM set to %s\n", state.MailFrom)
 			_, err = conn.Write(SCCUESS)
 			if err != nil {
-				log.Fatalln("error writing response", err)
+				log.Println("error writing response", err)
+				conn.Close()
 				return
 			}
+
 		} else if strings.HasPrefix(input, "RCPT TO:") && session.MailFromBool {
+
 			state.RcptTo = input[8:]
 			session.RcptToBool = true
-			println(state.RcptTo)
+			log.Printf("STATE: RCPT TO set to %s\n", state.RcptTo)
 			_, err = conn.Write(SCCUESS)
 			if err != nil {
-				log.Fatalln("error writing response", err)
+				log.Println("error writing response", err)
+				conn.Close()
 				return
 			}
+
 		} else if input == "DATA:" && session.RcptToBool {
+
 			conn.Write(DATA_READY)
 			state.Data = input
 			session.DataStored = true
+			log.Printf("STATE: DATA section started\n")
 			_, err = conn.Write(SCCUESS)
 			if err != nil {
-				log.Fatalln("error writing response", err)
+				log.Println("error writing response", err)
+				conn.Close()
 				return
 			}
+
 		} else if input == "QUIT" && session.DataClose {
+
 			session.Quit = true
 			println(CLOSE)
+			log.Printf("STATE: QUIT received, closing connection\n")
 			conn.Write(CLOSE)
 			conn.Close()
 			break
+
 		} else {
-			println(input)
-			log.Fatalln("Please try again")
+			log.Printf("INVALID COMMAND: %s\n", input)
+			_, err = conn.Write([]byte("500 Unrecognized command\r\n"))
+			conn.Close()
+			return
 		}
 	}
 }

@@ -15,7 +15,7 @@ func main() {
 	
 	fmt.Println("SMTP server is listening on port 8080")
 	defer listener.Close()
-
+	
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
