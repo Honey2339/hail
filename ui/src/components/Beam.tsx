@@ -65,7 +65,7 @@ export function Beam() {
             <Icons.notion />
           </Circle>
           <Circle ref={div4Ref} className="size-16">
-            <Image src={H} width={100} height={10} alt="" />
+            <Image src={H} width={30} height={5} alt="" />
           </Circle>
           <Circle ref={div6Ref}>
             <Icons.zapier />
