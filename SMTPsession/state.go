@@ -13,4 +13,5 @@ type SMTPStore struct {
 	MailFrom string
 	RcptTo   string
 	Data     string
+	Date     string
 }
