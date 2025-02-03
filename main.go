@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	smtp "hail/cmd"
+	"hail/database"
 	"log"
 	"net"
 )
@@ -15,7 +16,9 @@ func main() {
 	
 	fmt.Println("SMTP server is listening on port 8080")
 	defer listener.Close()
-	
+
+	database.ConnectDB()
+
 	for {
 		conn, err := listener.Accept()
 		if err != nil {

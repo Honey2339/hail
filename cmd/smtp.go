@@ -71,7 +71,12 @@ func Process_my_smtp(conn net.Conn) {
 			}
 
 		} else if strings.HasPrefix(input, "RCPT TO:") && session.MailFromBool {
-
+			
+			if(!strings.Contains(input[10:], "@")){
+				log.Println(INVALID_MAIL)
+				conn.Close()
+				return
+			}
 			state.RcptTo = input[8:]
 			session.RcptToBool = true
 			log.Printf("STATE: RCPT TO set to %s\n", state.RcptTo)
