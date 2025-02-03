@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { MoveRight, PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RainbowButton } from "./rainbow-button";
+import Link from "next/link";
 
 function Hero() {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -68,9 +69,11 @@ function Hero() {
             </p>
           </div>
           <div className="flex flex-row gap-3">
-            <RainbowButton className="gap-4 font-semibold">
-              Get Started
-            </RainbowButton>
+            <Link href="/mail">
+              <RainbowButton className="gap-4 font-semibold">
+                Get Started
+              </RainbowButton>
+            </Link>
           </div>
         </div>
       </div>
