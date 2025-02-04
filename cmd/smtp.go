@@ -43,7 +43,7 @@ func Process_my_smtp(conn net.Conn) {
 				session.DataClose = true
 			}
 
-		} else if input == "HELO" || input == "EHLO" {
+		} else if strings.HasPrefix("HELO", input) || strings.HasPrefix("EHLO", input) {
 
 			session.Helo = true
 			_, err = conn.Write(INIT)
@@ -124,7 +124,7 @@ func Process_my_smtp(conn net.Conn) {
 			break
 
 		} else {
-			log.Println("INVALID COMMAND: %s\n", input)
+			log.Printf("INVALID COMMAND: %s\n", input)
 			_, err = conn.Write([]byte("500 Unrecognized command\r\n"))
 			conn.Close()
 			return
