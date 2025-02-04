@@ -100,10 +100,10 @@ func Process_my_smtp(conn net.Conn) {
 				return
 			}
 
-		} else if input == "DATA:" && session.RcptToBool {
+		} else if strings.HasPrefix(input, "DATA") && session.RcptToBool {
 
 			conn.Write(DATA_READY)
-			state.Data = input[5:]
+			state.Data = input[4:]
 			session.DataStored = true
 			log.Printf("[STATE]: DATA section started\n")
 			_, err = conn.Write(SCCUESS)
