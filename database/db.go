@@ -15,13 +15,13 @@ import (
 func ConnectDB()(*sql.DB, error){
 	err := godotenv.Load(".env")
 	if err != nil{
-		log.Fatalln("Error loading .env file")
+		log.Println("Error loading .env file")
 	}
 	dcs := os.Getenv("DATABASE_URL")
 	db, err := sql.Open("postgres", dcs)
 
 	if err != nil {
-		log.Fatalln(DATABASE_ERROR)
+		log.Println(DATABASE_ERROR)
 		return nil, err
 	}
 
