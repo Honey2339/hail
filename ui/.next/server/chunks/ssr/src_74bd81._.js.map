@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 7, "column": 0}, "map": {"version":3,"sources":["file://F%3A/Workspace%206/Go/hail/ui/src/components/ui/label.tsx"],"sourcesContent":["\"use client\";\n\nimport * as React from \"react\";\n\nimport { cn } from \"@/lib/utils\";\n\nconst Label = React.forwardRef<HTMLLabelElement, React.LabelHTMLAttributes<HTMLLabelElement>>(\n  ({ className, ...props }, ref) => (\n    <label\n      ref={ref}\n      className={cn(\n        \"text-sm font-medium leading-4 text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\n        className,\n      )}\n      {...props}\n    />\n  ),\n);\nLabel.displayName = \"Label\";\n\nexport { Label };\n"],"names":[],"mappings":";;;;AAEA;AAEA;AAJA;;;;AAMA,MAAM,sBAAQ,2SAAM,UAAU,CAC5B,CAAC,EAAE,SAAS,EAAE,GAAG,OAAO,EAAE,oBACxB,mVAAC;QACC,KAAK;QACL,WAAW,CAAA,GAAA,mHAAA,CAAA,KAAE,AAAD,EACV,2GACA;QAED,GAAG,KAAK;;;;;;AAIf,MAAM,WAAW,GAAG"}},
-    {"offset": {"line": 28, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"A"}}]
-}

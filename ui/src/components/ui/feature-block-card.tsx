@@ -1,9 +1,8 @@
 "use client";
 
-import { animate, motion } from "framer-motion";
-import React, { useEffect } from "react";
+import React from "react";
 import { cn } from "@/lib/utils";
-import { Input } from "./input";
+import { motion } from "framer-motion";
 
 export interface AnimatedCardProps {
   className?: string;
@@ -31,25 +30,47 @@ export function AnimatedCard({
         className
       )}
     >
-      <div
-        className={cn(
-          "h-[15rem] md:h-[20rem] rounded-xl z-40",
-          "bg-[rgba(40,40,40,0.70)] [mask-image:radial-gradient(50%_50%_at_50%_50%,white_0%,transparent_100%)]"
-        )}
-      ></div>
       {children}
-
-      {/* {title && (
-        <h3 className="text-lg font-semibold text-white py-2">{title}</h3>
-        )}
-        {description && (
-          <p className="text-sm font-normal text-neutral-400 max-w-sm">
-          {description}
-          </p>
-          )} */}
+      <Sparkles />
     </div>
   );
 }
+
+const Sparkles = () => {
+  const randomMove = () => Math.random() * 2 - 1;
+  const randomOpacity = () => Math.random();
+  const random = () => Math.random();
+  return (
+    <div className="absolute inset-0 -z-10">
+      {[...Array(12)].map((_, i) => (
+        <motion.span
+          key={`star-${i}`}
+          animate={{
+            top: `calc(${random() * 100}% + ${randomMove()}px)`,
+            left: `calc(${random() * 100}% + ${randomMove()}px)`,
+            opacity: randomOpacity(),
+            scale: [1, 1.2, 0],
+          }}
+          transition={{
+            duration: random() * 2 + 4,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+          style={{
+            position: "absolute",
+            top: `${random() * 100}%`,
+            left: `${random() * 100}%`,
+            width: `2px`,
+            height: `2px`,
+            borderRadius: "50%",
+            zIndex: 1,
+          }}
+          className="inline-block bg-white"
+        ></motion.span>
+      ))}
+    </div>
+  );
+};
 
 const Container = React.forwardRef<
   HTMLDivElement,

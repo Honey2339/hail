@@ -161,7 +161,9 @@ function Faq() {
           <p className="text-sm font-medium text-white mb-1">
             Still have questions?
           </p>
-          <p className="text-xs text-gray-400 mb-4">We're here to help you</p>
+          <p className="text-xs text-gray-400 mb-4">
+            We&apos;re here to help you
+          </p>
           <button
             type="button"
             className={cn(

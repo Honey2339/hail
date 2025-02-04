@@ -257,7 +257,7 @@ function Faq() {
                             children: "Contact Support"
                         }, void 0, false, {
                             fileName: "[project]/src/components/Faq.tsx",
-                            lineNumber: 165,
+                            lineNumber: 167,
                             columnNumber: 11
                         }, this)
                     ]
