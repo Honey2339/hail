@@ -43,7 +43,7 @@ func Process_my_smtp(conn net.Conn) {
 				session.DataClose = true
 			}
 
-		} else if strings.HasPrefix("HELO", input) || strings.HasPrefix("EHLO", input) {
+		} else if strings.HasPrefix(input, "HELO") || strings.HasPrefix(input, "EHLO") {
 
 			session.Helo = true
 			_, err = conn.Write(INIT)
