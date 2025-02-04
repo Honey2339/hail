@@ -15,8 +15,8 @@ export interface Email {
 const User = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
-  const query = searchParam.get("q") || "";
-  const selectedEmailId = searchParam.get("email") || "";
+  const query = searchParam.get("q") ?? "";
+  const selectedEmailId = searchParam.get("users");
 
   useEffect(() => {
     if (!query) {
@@ -52,7 +52,7 @@ const User = () => {
     ? emails[parseInt(selectedEmailId)]
     : null;
 
-  return <div className="text-white">{JSON.stringify(selectedEmail)}</div>;
+  return <div></div>;
 };
 
 export default User;

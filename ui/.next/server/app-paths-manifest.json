@@ -1,1 +1,8 @@
-{}
+{
+  "/user/page": "app/user/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/contact/page": "app/contact/page.js",
+  "/faq/page": "app/faq/page.js",
+  "/page": "app/page.js",
+  "/mail/page": "app/mail/page.js"
+}
