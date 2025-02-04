@@ -21,12 +21,12 @@ func DelOldMail(){
 
 
 func main() {
-	listener, err := net.Listen("tcp", ":8080")
+	listener, err := net.Listen("tcp", ":25")
 	if err != nil {
 		log.Fatal("Error starting server", err)
 	}
 	
-	fmt.Println("SMTP server is listening on port 8080")
+	fmt.Println("SMTP server is listening on port 25")
 	defer listener.Close()	
 	
 	Db, _ = database.ConnectDB()

@@ -10,8 +10,22 @@ export interface EmailContent {
   date: Date;
 }
 
-export default async function parseEmail() {
+export async function parseEmail(data: string) {
   try {
-    const parsed = await simpleParser("email");
-  } catch (error) {}
+    const parsed = await simpleParser(data);
+    let a = {
+      subject: parsed.subject || "",
+      from: parsed.from?.text || "",
+      text: parsed.text || "",
+      html: parsed.html || "",
+      text_as_html: parsed.textAsHtml || "",
+      attachments: parsed.attachments || [],
+      date: parsed.date || new Date(),
+    };
+
+    return a;
+  } catch (error) {
+    console.error("Error parsing email", error);
+    throw error;
+  }
 }

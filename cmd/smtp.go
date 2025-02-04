@@ -103,7 +103,7 @@ func Process_my_smtp(conn net.Conn) {
 		} else if input == "DATA:" && session.RcptToBool {
 
 			conn.Write(DATA_READY)
-			state.Data = input
+			state.Data = input[5:]
 			session.DataStored = true
 			log.Printf("[STATE]: DATA section started\n")
 			_, err = conn.Write(SCCUESS)
