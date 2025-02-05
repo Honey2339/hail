@@ -3,6 +3,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { searchEmails } from "@/app/actions/actions";
 import { EmailContent } from "@/hooks/emailParser";
+import Card from "@/components/Card";
+import PaperButton from "@/components/PaperButton";
 
 export interface Email {
   id: number;
@@ -45,14 +47,24 @@ const User = () => {
   }, [query]);
 
   if (loading) {
-    return <div className="text-center text-2xl">Loading...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen">
+        <div className="text-center text-white text-2xl">Loading...</div>
+      </div>
+    );
   }
 
   const selectedEmail = selectedEmailId
     ? emails[parseInt(selectedEmailId)]
     : null;
 
-  return <div></div>;
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <Card>
+        <PaperButton label="Hi" />
+      </Card>
+    </div>
+  );
 };
 
 export default User;
