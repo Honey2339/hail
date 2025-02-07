@@ -4,9 +4,15 @@ interface PaperCardProps {
   title: string;
   date: string;
   body: string;
+  onClick?: (id: any) => void;
 }
 
-const PaperCard: React.FC<PaperCardProps> = ({ title, date, body }) => {
+const PaperCard: React.FC<PaperCardProps> = ({
+  title,
+  date,
+  body,
+  onClick,
+}) => {
   const truncatedBody = body.split(" ").slice(0, 10).join(" ") + "...";
 
   return (
@@ -16,6 +22,7 @@ const PaperCard: React.FC<PaperCardProps> = ({ title, date, body }) => {
       hover:scale-[1.02] hover:shadow-xl 
       hover:border-zinc-600
       cursor-pointer"
+      onClick={onClick}
     >
       <h2 className="text-lg font-bold text-zinc-100 mb-1">{title}</h2>
       <span className="text-sm text-zinc-400 block mb-2">{date}</span>

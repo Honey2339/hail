@@ -6,6 +6,7 @@ import { EmailContent } from "@/hooks/emailParser";
 import Card from "@/components/Card";
 import PaperButton from "@/components/PaperButton";
 import PaperCard from "@/components/PaperCard";
+import EmailPage from "./email";
 
 export interface Email {
   id: number;
@@ -19,7 +20,7 @@ const User = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
   const query = searchParam.get("q") ?? "";
-  const selectedEmailId = searchParam.get("users");
+  const selectedEmailId = searchParam.get("id");
 
   useEffect(() => {
     if (!query) {
@@ -36,7 +37,6 @@ const User = () => {
         try {
           const res = await searchEmails(`${query}@hail.prasoon.lol`);
           setEmails(res);
-          console.log("Emails:", res);
         } catch (error) {
           console.error("Failed to fetch emails:", error);
         } finally {
@@ -55,15 +55,25 @@ const User = () => {
     );
   }
 
-  const selectedEmail = selectedEmailId
-    ? emails[parseInt(selectedEmailId)]
-    : null;
+  if (selectedEmailId != null) {
+    return (
+      <div>
+        <EmailPage />
+      </div>
+    );
+  }
+  const handleBack = () => {
+    router.push("/mail");
+  };
+  const handleOnClick = (id: any) => {
+    router.push(`/user?q=${query}&id=${id}`);
+  };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Card>
         <div className="flex items-center w-full">
-          <div className="mr-auto">
+          <div className="mr-auto" onClick={handleBack}>
             <PaperButton label="Back" />
           </div>
           <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl text-white">
@@ -72,36 +82,15 @@ const User = () => {
         </div>
         <div className="h-[2px] w-full mt-2 bg-zinc-300"></div>
         <div className="flex flex-col items-center mt-5 space-y-6 w-full max-h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
-          <PaperCard
-            title="[Development] 385929 is your verification code"
-            body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
-            date="03/02/2025"
-          />
-          <PaperCard
-            title="[Development] 385929 is your verification code"
-            body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
-            date="03/02/2025"
-          />
-          <PaperCard
-            title="[Development] 385929 is your verification code"
-            body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
-            date="03/02/2025"
-          />
-          <PaperCard
-            title="[Development] 385929 is your verification code"
-            body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
-            date="03/02/2025"
-          />
-          <PaperCard
-            title="[Development] 385929 is your verification code"
-            body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
-            date="03/02/2025"
-          />
-          <PaperCard
-            title="[Development] 385929 is your verification code"
-            body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
-            date="03/02/2025"
-          />
+          {emails.map((email) => (
+            <PaperCard
+              key={email.id}
+              title="[Development] 385929 is your verification code"
+              body="385929 is your OTP code for DocSol. Do not share this with anyone. It was requested at 03 February 2025, 13:29 UTC. If you did not request this, please ignore this email."
+              date="03/02/2025"
+              onClick={() => handleOnClick(email.id)}
+            />
+          ))}
         </div>
       </Card>
     </div>
