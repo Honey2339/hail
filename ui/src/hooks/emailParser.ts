@@ -13,7 +13,6 @@ export interface EmailContent {
 export async function parseEmail(data: string): Promise<EmailContent> {
   try {
     const parsed = await simpleParser(data);
-    console.log(parsed);
 
     return {
       subject: parsed.subject ?? "",

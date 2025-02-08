@@ -38,8 +38,7 @@ func Process_my_smtp(conn net.Conn) {
 		if session.DataStored && !session.DataClose {
 
 			if input != "." {
-				state.Data += input + "\n"
-				println(state.Data)  
+				state.Data += input + "\n" 
 			} else {
 				session.DataClose = true
 			}

@@ -13,11 +13,11 @@ const PaperCard: React.FC<PaperCardProps> = ({
   body,
   onClick,
 }) => {
-  const truncatedBody = body.split(" ").slice(0, 10).join(" ") + "...";
+  const truncatedBody = body.split(" ").slice(0, 5).join(" ") + "...";
 
   return (
     <div
-      className="bg-zinc-800 text-left w-full/90 border-2 border-zinc-700 rounded-lg p-4 
+      className="bg-zinc-800 text-left w-[95%] border-2 border-zinc-700 rounded-lg p-4 
       shadow-lg transition-all duration-300 
       hover:scale-[1.02] hover:shadow-xl 
       hover:border-zinc-600

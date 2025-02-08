@@ -11,7 +11,6 @@ export async function searchEmails(rcptQuery: string) {
     );
     const output = [];
     for (const i of result.rows) {
-      console.log(i);
       const parsedEmail = await parseEmail(i.data);
       output.push({
         id: i.id,

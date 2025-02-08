@@ -119,24 +119,34 @@ function FAQItem({ question, answer, index }: FAQItemProps) {
 function Faq() {
   const faqs: Omit<FAQItemProps, "index">[] = [
     {
-      question: "What makes your platform unique?",
+      question: "Why delete temporary emails after 7 days?",
       answer:
-        "Our platform stands out through its intuitive design, powerful automation capabilities, and seamless integration options. We've focused on creating a user experience that combines simplicity with advanced features.",
+        "Temporary emails are deleted after 7 days to ensure privacy and security, prevent storage overload, and comply with best practices for temporary data retention.",
     },
     {
-      question: "How does the pricing structure work?",
+      question: "Can I use the temporary email for account verification?",
       answer:
-        "We offer flexible, transparent pricing tiers designed to scale with your needs. Each tier includes a core set of features, with additional capabilities as you move up. All plans start with a 14-day free trial.",
+        "Yes, you can use the temporary email for one-time verifications, but some services may block temporary email domains. If an issue arises, consider using a different provider.",
     },
     {
-      question: "What kind of support do you offer?",
+      question: "Is my temporary email address unique?",
       answer:
-        "We provide comprehensive support through multiple channels. This includes 24/7 live chat, detailed documentation, video tutorials, and dedicated account managers for enterprise clients.",
+        "Yes, each generated email address is unique for your session. However, once it expires, the same address might be assigned to another user.",
     },
     {
-      question: "How can I get started?",
+      question: "Can I recover a deleted email?",
       answer:
-        "You can get started by signing up for a free trial. Once you've signed up, you'll have access to our platform's full range of features. You can also contact our support team for assistance.",
+        "No, once an email is deleted, it is permanently removed from our system. We do not store backups for security and privacy reasons.",
+    },
+    {
+      question: "How does a temporary email service work?",
+      answer:
+        "When you visit our site, we generate a random email address for you. Any emails sent to that address appear in your inbox, and after a set period, they are automatically deleted.",
+    },
+    {
+      question: "Can I send emails using a temporary email address?",
+      answer:
+        "No, our service is designed only for receiving emails, not for sending them. This is to prevent misuse and ensure compliance with email service policies.",
     },
   ];
 
@@ -148,35 +158,6 @@ function Faq() {
             <FAQItem key={index} {...faq} index={index} />
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className={cn("max-w-md mx-auto mt-12 p-6 rounded-lg text-center")}
-        >
-          <div className="inline-flex items-center justify-center p-1.5 rounded-full  mb-4">
-            <Mail className="h-4 w-4" />
-          </div>
-          <p className="text-sm font-medium text-white mb-1">
-            Still have questions?
-          </p>
-          <p className="text-xs text-gray-400 mb-4">
-            We&apos;re here to help you
-          </p>
-          <button
-            type="button"
-            className={cn(
-              "px-4 py-2 text-sm rounded-md",
-              "bg-white text-gray-900",
-              "hover:bg-gray-100",
-              "transition-colors duration-200",
-              "font-medium"
-            )}
-          >
-            Contact Support
-          </button>
-        </motion.div>
       </div>
     </section>
   );

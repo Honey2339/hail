@@ -33,7 +33,6 @@ const EmailPage = () => {
             (e: Email) => e.id === Number(emailId)
           );
           setEmail(selectedEmail || null);
-          console.log("Email:", selectedEmail);
         } catch (error) {
           console.error("Failed to fetch email:", error);
         } finally {
