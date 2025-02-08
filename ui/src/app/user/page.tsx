@@ -1,6 +1,6 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { searchEmails } from "@/app/actions/actions";
 import { EmailContent } from "@/hooks/emailParser";
 import Card from "@/components/Card";
@@ -16,7 +16,7 @@ export interface Email {
   data: EmailContent;
 }
 
-const User = () => {
+const UserContent = () => {
   const searchParam = useSearchParams();
   const router = useRouter();
   const query = searchParam.get("q") ?? "";
@@ -54,13 +54,11 @@ const User = () => {
       </div>
     );
   }
+
   if (selectedEmailId != null) {
-    return (
-      <div>
-        <EmailPage />
-      </div>
-    );
+    return <EmailPage />;
   }
+
   const handleBack = () => {
     router.push("/mail");
   };
@@ -68,7 +66,7 @@ const User = () => {
     router.push(`/user?q=${query}&id=${id}`);
   };
 
-  if (emails.length == 0) {
+  if (emails.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center h-screen">
         <Card>
@@ -90,6 +88,7 @@ const User = () => {
       </div>
     );
   }
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <Card>
@@ -115,6 +114,14 @@ const User = () => {
         </div>
       </Card>
     </div>
+  );
+};
+
+const User = () => {
+  return (
+    <Suspense fallback={<div className="text-white text-2xl">Loading...</div>}>
+      <UserContent />
+    </Suspense>
   );
 };
 
