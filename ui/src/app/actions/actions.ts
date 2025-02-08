@@ -7,7 +7,7 @@ export async function searchEmails(rcptQuery: string) {
   try {
     const result = await db.query(
       `SELECT id, mail_from, rcpt_to, data, date FROM users WHERE rcpt_to ILIKE $1`,
-      [`%${rcptQuery}%`]
+      [`<${rcptQuery}>`]
     );
     const output = [];
     for (const i of result.rows) {
