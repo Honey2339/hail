@@ -38,14 +38,7 @@ func Process_my_smtp(conn net.Conn) {
 		if session.DataStored && !session.DataClose {
 
 			if input != "." {
-				if strings.HasSuffix(state.Data, "\r\n.\r\n") {
-					_, err = conn.Write(SCCUESS)
-					if err != nil {
-						log.Println("error writing response", err)
-						conn.Close()
-						return
-					}
-				}
+				state.Data += "\n"
 				state.Data += input
 			} else {
 				session.DataClose = true
@@ -109,18 +102,18 @@ func Process_my_smtp(conn net.Conn) {
 			}
 
 		} else if strings.HasPrefix(input, "DATA") && session.RcptToBool {
+
 			conn.Write(DATA_READY)
 			state.Data = input[4:]
 			session.DataStored = true
-		
 			log.Printf("[STATE]: DATA section started\n")
-		
 			_, err = conn.Write(SCCUESS)
 			if err != nil {
 				log.Println("error writing response", err)
 				conn.Close()
 				return
 			}
+
 		} else if input == "QUIT" && session.DataClose {
 
 			session.Quit = true
