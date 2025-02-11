@@ -80,7 +80,14 @@ const EmailPage = () => {
             <h1 className="font-semibold">To : </h1>
             <h1>{email.rcpt_to}</h1>
           </div>
-          <div className="mt-5 text-white flex gap-1 text-lg font-sans">
+          <div
+            dangerouslySetInnerHTML={{ __html: email.data.html }}
+            className="mt-5 text-white flex gap-1 text-lg font-sans"
+          ></div>
+          <div
+            dangerouslySetInnerHTML={{ __html: email.data.html }}
+            className="mt-5 text-white flex gap-1 text-lg font-sans"
+          >
             {email.data.text}
           </div>
         </div>
