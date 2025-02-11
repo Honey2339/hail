@@ -82,14 +82,8 @@ const EmailPage = () => {
           </div>
           <div
             dangerouslySetInnerHTML={{ __html: email.data.html }}
-            className="mt-5 text-white flex gap-1 text-lg font-sans"
+            className="mt-5 flex gap-1 break-words"
           ></div>
-          <div
-            dangerouslySetInnerHTML={{ __html: email.data.html }}
-            className="mt-5 text-white flex gap-1 text-lg font-sans"
-          >
-            {email.data.text}
-          </div>
         </div>
       </EmailCard>
     </div>
