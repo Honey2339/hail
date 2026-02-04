@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { motion } from "framer-motion";
 
 interface PaperCardProps {
   title: string;
@@ -13,21 +16,29 @@ const PaperCard: React.FC<PaperCardProps> = ({
   body,
   onClick,
 }) => {
-  const truncatedBody = body.split(" ").slice(0, 5).join(" ") + "...";
+  const truncatedBody = body.split(" ").slice(0, 8).join(" ") + "...";
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 
   return (
-    <div
-      className="bg-zinc-800 text-left w-[95%] border-2 border-zinc-700 rounded-lg p-4 
-      shadow-lg transition-all duration-300 
-      hover:scale-[1.02] hover:shadow-xl 
-      hover:border-zinc-600
-      cursor-pointer"
+    <motion.div
+      className="w-full text-left border-b border-black/5 py-5 cursor-pointer group"
       onClick={onClick}
+      whileHover={{ x: 4 }}
+      transition={{ duration: 0.2 }}
     >
-      <h2 className="text-lg font-bold text-zinc-100 mb-1">{title}</h2>
-      <span className="text-sm text-zinc-400 block mb-2">{date}</span>
-      <div className="text-zinc-300">{truncatedBody}</div>
-    </div>
+      <div className="flex items-baseline justify-between gap-4 mb-1.5">
+        <h2 className="text-base font-medium text-black group-hover:text-black/70 transition-colors duration-200 truncate">
+          {title}
+        </h2>
+        <span className="text-xs text-black/30 whitespace-nowrap shrink-0">
+          {formattedDate}
+        </span>
+      </div>
+      <p className="text-sm text-black/40 leading-relaxed">{truncatedBody}</p>
+    </motion.div>
   );
 };
 

@@ -3,7 +3,7 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="mt-20">
+    <div className="min-h-screen bg-cream pt-28 pb-16">
       <Faq />
     </div>
   );

@@ -3,9 +3,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { searchEmails } from "@/app/actions/actions";
 import { EmailContent } from "@/hooks/emailParser";
-import Card from "@/components/Card";
-import PaperButton from "@/components/PaperButton";
-import EmailCard from "@/components/EmailCard";
+import { motion } from "framer-motion";
+import { ArrowLeft } from "lucide-react";
 
 export interface Email {
   id: number;
@@ -44,48 +43,72 @@ const EmailPage = () => {
   }, [query, emailId]);
 
   if (loading) {
-    return <div className="text-white text-2xl text-center">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center h-screen bg-cream">
+        <span className="text-black/40 text-sm">Loading...</span>
+      </div>
+    );
   }
 
   if (!email) {
     return (
-      <div className="text-white text-2xl text-center">Email not found</div>
+      <div className="flex items-center justify-center h-screen bg-cream">
+        <span className="text-black/40 text-sm">Email not found</span>
+      </div>
     );
   }
+
   const handleBack = () => {
     router.push(`/user?q=${query}`);
   };
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <EmailCard>
-        <div className="flex items-center w-full">
-          <div className="mr-auto" onClick={handleBack}>
-            <PaperButton label="Back" />
+    <div className="min-h-screen bg-cream pt-28 pb-16 px-6">
+      <motion.div
+        className="max-w-3xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <button
+          onClick={handleBack}
+          className="inline-flex items-center gap-2 text-sm text-black/40 hover:text-black/70 transition-colors duration-300 mb-10"
+        >
+          <ArrowLeft size={14} />
+          Back to inbox
+        </button>
+
+        <h1 className="font-serif text-3xl sm:text-4xl text-black mb-6 italic">
+          {email.data.subject}
+        </h1>
+
+        <div className="flex flex-col gap-1 mb-8 pb-6 border-b border-black/5">
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs text-black/30 w-10">From</span>
+            <span className="text-sm text-black/70">{email.mail_from}</span>
           </div>
-          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl text-white">
-            {email.data.subject}
-          </h1>
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs text-black/30 w-10">To</span>
+            <span className="text-sm text-black/70">{email.rcpt_to}</span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-xs text-black/30 w-10">Date</span>
+            <span className="text-sm text-black/70">
+              {new Date(email.date).toLocaleDateString("en-US", {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </span>
+          </div>
         </div>
-        <div className="h-[2px] w-full mt-2 bg-zinc-300"></div>
-        <div className="flex flex-col text-left w-full mt-4 overflow-y-scroll pr-2 custom-scrollbar">
-          <div className="text-zinc-300 flex gap-1 text-base font-mono">
-            <h1 className="font-semibold">Date : </h1>
-            <h1>{new Date(email.date).toLocaleDateString()}</h1>
-          </div>
-          <div className="text-white flex gap-1 text-lg font-mono">
-            <h1 className="font-semibold">From : </h1>
-            <h1>{email.mail_from}</h1>
-          </div>
-          <div className="text-white flex gap-1 text-lg font-mono">
-            <h1 className="font-semibold">To : </h1>
-            <h1>{email.rcpt_to}</h1>
-          </div>
-          <div
-            dangerouslySetInnerHTML={{ __html: email.data.html }}
-            className="mt-5 flex gap-1 break-words"
-          ></div>
-        </div>
-      </EmailCard>
+
+        <div
+          dangerouslySetInnerHTML={{ __html: email.data.html }}
+          className="prose prose-sm max-w-none text-black/70 leading-relaxed break-words [&_a]:text-black [&_a]:underline [&_img]:max-w-full"
+        />
+      </motion.div>
     </div>
   );
 };

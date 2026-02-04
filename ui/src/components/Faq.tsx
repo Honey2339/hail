@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronDown, Mail } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { ChevronDown } from "lucide-react";
 
 interface FAQItemProps {
   question: string;
@@ -19,46 +18,24 @@ function FAQItem({ question, answer, index }: FAQItemProps) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: 0.3,
-        delay: index * 0.15,
-        ease: "easeOut",
+        duration: 0.5,
+        delay: index * 0.1,
+        ease: [0.22, 1, 0.36, 1],
       }}
-      className={cn(
-        "group rounded-lg border-[0.5px] border-gray-800/50",
-        "transition-all duration-200 ease-in-out",
-        isOpen
-          ? "bg-linear-to-br from-white/5 via-white to-white/5"
-          : "hover:bg-white/[0.02]"
-      )}
+      className="border-b border-black/5"
     >
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full px-6 py-4 flex items-center justify-between gap-4"
+        className="w-full py-6 flex items-center justify-between gap-4 text-left"
       >
-        <h3
-          className={cn(
-            "text-base font-medium transition-colors duration-200 text-left",
-            "text-gray-300",
-            isOpen && "text-white"
-          )}
-        >
+        <h3 className="text-base text-black/70 transition-colors duration-200 hover:text-black">
           {question}
         </h3>
         <motion.div
-          animate={{
-            rotate: isOpen ? 180 : 0,
-            scale: isOpen ? 1.1 : 1,
-          }}
-          transition={{
-            duration: 0.3,
-            ease: "easeInOut",
-          }}
-          className={cn(
-            "p-0.5 rounded-full shrink-0",
-            "transition-colors duration-200",
-            isOpen ? "text-primary" : "text-gray-500"
-          )}
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+          className="text-black/25 shrink-0"
         >
           <ChevronDown className="h-4 w-4" />
         </motion.div>
@@ -71,44 +48,22 @@ function FAQItem({ question, answer, index }: FAQItemProps) {
               height: "auto",
               opacity: 1,
               transition: {
-                height: {
-                  duration: 0.4,
-                  ease: [0.04, 0.62, 0.23, 0.98],
-                },
-                opacity: {
-                  duration: 0.25,
-                  delay: 0.1,
-                },
+                height: { duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] },
+                opacity: { duration: 0.25, delay: 0.1 },
               },
             }}
             exit={{
               height: 0,
               opacity: 0,
               transition: {
-                height: {
-                  duration: 0.3,
-                  ease: "easeInOut",
-                },
-                opacity: {
-                  duration: 0.25,
-                },
+                height: { duration: 0.3, ease: "easeInOut" },
+                opacity: { duration: 0.2 },
               },
             }}
           >
-            <div className="px-6 pb-4 pt-2">
-              <motion.p
-                initial={{ y: -8, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                exit={{ y: -8, opacity: 0 }}
-                transition={{
-                  duration: 0.3,
-                  ease: "easeOut",
-                }}
-                className="text-sm text-gray-400 leading-relaxed"
-              >
-                {answer}
-              </motion.p>
-            </div>
+            <p className="pb-6 text-sm text-black/40 leading-relaxed">
+              {answer}
+            </p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -151,9 +106,15 @@ function Faq() {
   ];
 
   return (
-    <section className="py-16 w-full bg-linear-to-b from-transparent via-white/[0.02] to-transparent">
-      <div className="container px-4 mx-auto">
-        <div className="max-w-2xl mx-auto space-y-2">
+    <section className="w-full">
+      <div className="max-w-2xl mx-auto px-6">
+        <h2 className="font-serif text-4xl text-black mb-2 italic">
+          Questions & Answers
+        </h2>
+        <p className="text-sm text-black/40 mb-12">
+          Everything you need to know about Hail.
+        </p>
+        <div>
           {faqs.map((faq, index) => (
             <FAQItem key={index} {...faq} index={index} />
           ))}

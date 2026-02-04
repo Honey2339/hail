@@ -3,10 +3,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect, useState } from "react";
 import { searchEmails } from "@/app/actions/actions";
 import { EmailContent } from "@/hooks/emailParser";
-import Card from "@/components/Card";
-import PaperButton from "@/components/PaperButton";
 import PaperCard from "@/components/PaperCard";
 import EmailPage from "./email";
+import { motion } from "framer-motion";
+import { ArrowLeft, Mail } from "lucide-react";
 
 export interface Email {
   id: number;
@@ -49,8 +49,14 @@ const UserContent = () => {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <div className="text-center text-white text-2xl">Loading...</div>
+      <div className="flex flex-col items-center justify-center h-screen bg-cream">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-black/40 text-sm tracking-wide"
+        >
+          Loading...
+        </motion.div>
       </div>
     );
   }
@@ -62,64 +68,76 @@ const UserContent = () => {
   const handleBack = () => {
     router.push("/mail");
   };
-  const handleOnClick = (id: any) => {
-    router.push(`/user?q=${query}&id=${id}`);
-  };
-
-  if (emails.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <Card>
-          <div className="flex items-center w-full">
-            <div className="mr-auto" onClick={handleBack}>
-              <PaperButton label="Back" />
-            </div>
-            <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl text-white">
-              {query}@hail.prasoon.lol
-            </h1>
-          </div>
-          <div className="h-[2px] w-full mt-2 bg-zinc-300"></div>
-          <div className="flex flex-col items-center mt-5 space-y-6 w-full max-h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
-            <div className="text-center text-white text-2xl">
-              No emails found
-            </div>
-          </div>
-        </Card>
-      </div>
-    );
-  }
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <Card>
-        <div className="flex items-center w-full">
-          <div className="mr-auto" onClick={handleBack}>
-            <PaperButton label="Back" />
-          </div>
-          <h1 className="absolute left-1/2 transform -translate-x-1/2 text-xl text-white">
-            {query}@hail.prasoon.lol
+    <div className="min-h-screen bg-cream pt-28 pb-16 px-6">
+      <motion.div
+        className="max-w-2xl mx-auto"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      >
+        <button
+          onClick={handleBack}
+          className="inline-flex items-center gap-2 text-sm text-black/40 hover:text-black/70 transition-colors duration-300 mb-10"
+        >
+          <ArrowLeft size={14} />
+          Back
+        </button>
+
+        <div className="flex items-baseline justify-between mb-2">
+          <h1 className="font-serif text-3xl sm:text-4xl text-black italic">
+            Inbox
           </h1>
+          <span className="text-xs text-black/30">
+            {query}@hail.prasoon.lol
+          </span>
         </div>
-        <div className="h-[2px] w-full mt-2 bg-zinc-300"></div>
-        <div className="flex flex-col items-center mt-5 space-y-6 w-full max-h-[500px] overflow-y-scroll pr-2 custom-scrollbar">
-          {emails.map((email) => (
-            <PaperCard
-              key={email.id}
-              title={email.data.subject}
-              body={email.data.text}
-              date={email.data.date.toISOString()}
-              onClick={() => handleOnClick(email.id)}
-            />
-          ))}
-        </div>
-      </Card>
+
+        <div className="h-px w-full bg-black/10 mb-2" />
+
+        {emails.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-24">
+            <Mail size={24} strokeWidth={1} className="text-black/15 mb-4" />
+            <p className="text-black/30 text-sm">No emails yet</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-black/5">
+            {emails.map((email, i) => (
+              <motion.div
+                key={email.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{
+                  delay: i * 0.05,
+                  duration: 0.5,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+              >
+                <PaperCard
+                  title={email.data.subject}
+                  body={email.data.text}
+                  date={email.data.date.toISOString()}
+                  onClick={() => router.push(`/user?q=${query}&id=${email.id}`)}
+                />
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </motion.div>
     </div>
   );
 };
 
 const User = () => {
   return (
-    <Suspense fallback={<div className="text-white text-2xl">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen bg-cream">
+          <span className="text-black/40 text-sm">Loading...</span>
+        </div>
+      }
+    >
       <UserContent />
     </Suspense>
   );

@@ -1,14 +1,10 @@
 import React from "react";
+import { ArrowLeft } from "lucide-react";
 
 const PaperButton = ({ label }: { label: string }) => {
   return (
-    <button
-      className="relative bg-white border-2 border-zinc-800 px-8 py-2 font-bold text-zinc-900 rounded-lg 
-                 transition-all duration-200 ease-in-out 
-                 hover:scale-105
-                 hover:shadow-[0_8px_15px_rgba(0,0,0,0.2)] 
-                 active:scale-95"
-    >
+    <button className="inline-flex items-center gap-2 text-sm text-black/40 hover:text-black transition-colors duration-300 cursor-pointer">
+      <ArrowLeft size={14} />
       {label}
     </button>
   );
