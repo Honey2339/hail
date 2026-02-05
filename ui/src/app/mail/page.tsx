@@ -65,7 +65,7 @@ const Page = () => {
               autoFocus
             />
             <span className="text-black/30 text-sm ml-2 whitespace-nowrap">
-              @hail.prasoon.lol
+              @hail.prasoon.rs
             </span>
           </div>
 

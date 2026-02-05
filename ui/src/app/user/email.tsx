@@ -27,7 +27,7 @@ const EmailPage = () => {
     async function fetchEmail() {
       if (query && emailId) {
         try {
-          const res = await searchEmails(`${query}@hail.prasoon.lol`);
+          const res = await searchEmails(`${query}@hail.prasoon.rs`);
           const selectedEmail = res.find(
             (e: Email) => e.id === Number(emailId)
           );

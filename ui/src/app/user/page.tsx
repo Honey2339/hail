@@ -35,7 +35,7 @@ const UserContent = () => {
     async function fetchEmails() {
       if (query) {
         try {
-          const res = await searchEmails(`${query}@hail.prasoon.lol`);
+          const res = await searchEmails(`${query}@hail.prasoon.rs`);
           setEmails(res.reverse());
         } catch (error) {
           console.error("Failed to fetch emails:", error);
@@ -90,7 +90,7 @@ const UserContent = () => {
             Inbox
           </h1>
           <span className="text-xs text-black/30">
-            {query}@hail.prasoon.lol
+            {query}@hail.prasoon.rs
           </span>
         </div>
 

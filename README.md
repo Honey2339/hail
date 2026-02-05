@@ -10,8 +10,8 @@ A lightweight, secure, and ephemeral email communication service built from scra
 - **Lightweight & Efficient**: Optimized for performance and low resource consumption.
 
 ## Usage
-- The server listens for incoming emails to `username@hail.prasoon.lol` and stores them temporarily.
-- Emails are accessible via UI at `https://hail.prasoon.lol`
+- The server listens for incoming emails to `username@hail.prasoon.rs` and stores them temporarily.
+- Emails are accessible via UI at `https://hail.prasoon.rs`
 - Messages auto-expire after the 7 day.
 
 ## Configuration
