@@ -6,7 +6,7 @@ import { EmailContent } from "@/hooks/emailParser";
 import PaperCard from "@/components/PaperCard";
 import EmailPage from "./email";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail } from "lucide-react";
+import { ArrowLeft, Mail, Copy, Check, RefreshCw } from "lucide-react";
 
 export interface Email {
   id: number;
@@ -30,6 +30,28 @@ const UserContent = () => {
 
   const [emails, setEmails] = useState<Email[]>([]);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const emailAddress = `${query}@hail.prasoon.rs`;
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(emailAddress);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    try {
+      const res = await searchEmails(emailAddress);
+      setEmails(res.reverse());
+    } catch (error) {
+      console.error("Failed to fetch emails:", error);
+    } finally {
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
     async function fetchEmails() {
@@ -97,9 +119,70 @@ const UserContent = () => {
         <div className="h-px w-full bg-black/10 mb-2" />
 
         {emails.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-24">
-            <Mail size={24} strokeWidth={1} className="text-black/15 mb-4" />
-            <p className="text-black/30 text-sm">No emails yet</p>
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="w-16 h-16 rounded-full bg-black/5 flex items-center justify-center mb-6">
+              <Mail size={24} strokeWidth={1.5} className="text-black/30" />
+            </div>
+            <h2 className="font-serif text-xl text-black italic mb-2">
+              Waiting for emails
+            </h2>
+            <p className="text-black/40 text-sm mb-8 text-center max-w-xs">
+              Use this address to sign up for services or receive emails
+            </p>
+
+            <div className="w-full max-w-sm bg-black/5 rounded-lg p-4 mb-6">
+              <p className="text-xs text-black/40 mb-2 text-center">
+                Your temporary email
+              </p>
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-black font-medium text-sm sm:text-base">
+                  {emailAddress}
+                </span>
+                <button
+                  onClick={handleCopy}
+                  className="p-1.5 hover:bg-black/10 rounded transition-colors"
+                  title="Copy to clipboard"
+                >
+                  {copied ? (
+                    <Check size={14} className="text-green-600" />
+                  ) : (
+                    <Copy size={14} className="text-black/40" />
+                  )}
+                </button>
+              </div>
+            </div>
+
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="inline-flex items-center gap-2 text-sm text-black/50 hover:text-black/80 transition-colors disabled:opacity-50"
+            >
+              <RefreshCw
+                size={14}
+                className={refreshing ? "animate-spin" : ""}
+              />
+              {refreshing ? "Checking..." : "Check for new emails"}
+            </button>
+
+            <div className="mt-10 pt-8 border-t border-black/5 w-full max-w-sm">
+              <p className="text-xs text-black/30 text-center mb-4">
+                Tips for using temporary email
+              </p>
+              <ul className="space-y-3 text-xs text-black/40">
+                <li className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1 w-1 rounded-full bg-black/20 shrink-0" />
+                  <span>Use for newsletter signups, free trials, or one-time verifications</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1 w-1 rounded-full bg-black/20 shrink-0" />
+                  <span>Emails arrive instantly — refresh to check</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="mt-1.5 h-1 w-1 rounded-full bg-black/20 shrink-0" />
+                  <span>All emails are deleted after 7 days</span>
+                </li>
+              </ul>
+            </div>
           </div>
         ) : (
           <div className="divide-y divide-black/5">
